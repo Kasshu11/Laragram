@@ -191,66 +191,32 @@
                     </div>
             @endforelse
         </div>
-        
-        @foreach($suggested_users as $user)
-            @unless ($user->isFollowed())
-                <div class="col-4">
-                    <div class="card p-0"> 
-                        <div class="card-header p-2">
-                            <span class="text-muted">Suggestions for you</span>
-                            <a href="" class="text-decoration-none float-end" style="color: darkviolet">See All</a>
-                        </div>
-                        
-                        <div class="mt-1 p-2">
-                            @if ($user->avatar)
-                                <img src="{{ asset('/storage/avatars/' . $user->avatar) }}" alt="#" class="rounded-circle avatar-sm">
-                            @else
-                                <i class="fa-solid fa-circle-user text-secondary icon-sm"></i>
-                            @endif
-                            <span class="text-muted">{{$user->name}}</span>
-                            <form action="{{ route('follow.store') }}" method="post" class="d-inline float-end pt-1">
-                                @csrf
-                                <input type="hidden" name="id" value="{{ $user->id }}">
-                                <button type="submit" class="dropdown-item " style="color: blueviolet">Follow</button>
-                            </form>
-                        </div>
-                    </div> 
-                </div>
-            @endunless
-        @endforeach
+
+        @if($suggested_users)
+            <div class="col-4">
+                <div class="card p-0"> 
+                    <div class="card-header p-2">
+                        <span class="text-muted">Suggestions for you</span>
+                    </div>
+                    @foreach($suggested_users as $user)
+                        @unless ($user->isFollowed())
+                            <div class="mt-1 p-2">
+                                @if ($user->avatar)
+                                    <img src="{{ asset('/storage/avatars/' . $user->avatar) }}" alt="#" class="rounded-circle avatar-sm">
+                                @else
+                                    <i class="fa-solid fa-circle-user text-secondary icon-sm"></i>
+                                @endif
+                                <span class="text-muted">{{$user->name}}</span>
+                                <form action="{{ route('follow.store') }}" method="post" class="d-inline float-end pt-1">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $user->id }}">
+                                    <button type="submit" class="dropdown-item " style="color: blueviolet">Follow</button>
+                                </form>
+                            </div>
+                        @endunless
+                    @endforeach
+                </div> 
+            </div>
+        @endif
     </div>            
 @endsection   
-    
-
-{{-- 警告表示！！ --}}
-<!-- Modal trigger button -->
-{{-- <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#modalId">
-  Launch
-</button>
-
-<!-- Modal Body -->
-<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
-<div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitleId">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Body
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Optional: Place to the bottom of scripts -->
-<script>
-    const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
-
-</script> --}}

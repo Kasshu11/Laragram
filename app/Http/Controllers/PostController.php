@@ -138,11 +138,15 @@ class PostController extends Controller
 
         $post->CategoryPost()->delete(); // delete all prevoiously selected categories
 
-        foreach($request->category as $category_id):
-            $category_post[] = ["category_id"=>$category_id];
-        endforeach;
+        if($request->category){
+            foreach($request->category as $category_id):
+                $category_post[] = ["category_id"=>$category_id];
+            endforeach;
 
-        $post->CategoryPost()->createMany($category_post);
+            $post->CategoryPost()->createMany($category_post);
+        }
+
+        
 
         return redirect()->route('post.show',$post);
     }
