@@ -31,7 +31,7 @@ class ProfileController extends Controller
 
 
     public function edit($id){
-       
+
         $user =  User::findOrFail($id);
         return view('users.profile.edit')->with('user', $user);
     }
@@ -47,7 +47,7 @@ class ProfileController extends Controller
         // if the user uploaded an avatar
         if ($request->avatar) { //もし写真が選択されていた場合 / avatar come from the name of input
             if($user->avatar){  // データベースに既存の写真があったら
-                $this->deleteAvatar(); //既存の写真を削除（データベースから）
+                $this->deleteAvatar($user); //既存の写真を削除（データベースから）
             }
             // Move the new one to local storage
             $user->avatar = $this->saveAvatar($request);
@@ -55,8 +55,6 @@ class ProfileController extends Controller
         }
         $user->save();
         return redirect()->route('profile.show', $id);
-       
-      
     }
 
     public function saveAvatar($request){
@@ -70,10 +68,11 @@ class ProfileController extends Controller
         return $avatar_name;
     }
 
-    public function deleteAvatar($avatar_name){
+    public function deleteAvatar($user){    //$user comes from line 50
+        $avatar_name = $user->avatar;
         $avatar_path = self::LOCAL_STORAGE_FOLDER . $avatar_name;
         // The avatar_path = "public/avatars/1234567.jpeg"
-
+                                        //   1234567.jpeg = $avatars_name
         if (Storage::disk('local')->exists($avatar_path)) {
             Storage::disk('local')->delete($avatar_path);
         }
